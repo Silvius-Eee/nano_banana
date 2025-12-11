@@ -1,0 +1,10 @@
+*.py
+*.pyc
+__pycache__/
+.python-version
+*.txt
+*.yml
+*.yaml
+Pipfile
+Pipfile.lock
+*.toml

@@ -2,6 +2,8 @@
   "name": "nano-banana-landing-page",
   "version": "1.0.0",
   "description": "Nano Banana landing page",
+  "private": true,
+  "type": "module",
   "scripts": {
     "build": "echo 'Static site - no build needed'"
   },
