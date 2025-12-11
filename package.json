@@ -1,0 +1,10 @@
+{
+  "name": "nano-banana-landing-page",
+  "version": "1.0.0",
+  "description": "Nano Banana landing page",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

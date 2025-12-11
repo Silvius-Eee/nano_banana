@@ -1,0 +1,6 @@
+*.py
+*.json
+requirements.txt
+setup.py
+__pycache__/
+*.pyc
