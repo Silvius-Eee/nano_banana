@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Banana - 会听话的AI设计师 | Google最新AI图像生成模型</title>
+    <meta name="description" content="Nano Banana（代号）是Google DeepMind开发的革命性AI图像生成模型，正式名称为Gemini 2.5 Flash Image和3.0 Pro Image。拥有角色一致性、自然语言编辑、精准文字渲染等突破性功能。体验Nano Banana的强大能力，轻松创作专业级图像作品。">
+    <meta name="keywords" content="Nano Banana, AI绘图, Google Gemini, 图像生成, 角色一致性, 文字渲染, AI设计, Gemini Image, AI艺术, 智能绘图">
+    <meta property="og:title" content="Nano Banana - Google革命性AI图像生成模型">
+    <meta property="og:description" content="体验Nano Banana的强大功能：角色一致性、自然语言编辑、零错别字文字渲染。会听话的AI设计师，让创作变得简单。">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nano Banana - 会听话的AI设计师">
+    <meta name="twitter:description" content="Google最新AI图像模型Nano Banana，拥有角色一致性、自然语言编辑等革命性功能。立即体验！">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-black: #0A0A0A;
+            --bg-dark: #1A1A1A;
+            --bg-darker: #050505;
+            --gold-primary: #FFD700;
+            --gold-secondary: #FDB813;
+            --gold-accent: #FFA000;
+            --deep-space: #1A237E;
+            --nebula-purple: #4A148C;
+            --text-light: #E0E0E0;
+            --text-dim: #9E9E9E;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-bg-hover: rgba(255, 255, 255, 0.1);
+            --glow-white: rgba(255, 255, 255, 0.8);
+            --glow-gold: rgba(255, 215, 0, 0.5);
+            --border-gold: rgba(255, 215, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, transparent, var(--gold-primary), transparent);
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, var(--bg-darker) 0%, var(--bg-black) 50%, var(--bg-black) 100%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 80px var(--glow-gold);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: brightness(1) drop-shadow(0 0 20px var(--gold-primary)); }
+            to { filter: brightness(1.2) drop-shadow(0 0 40px var(--gold-secondary)); }
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            color: var(--bg-black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px var(--glow-gold);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px var(--glow-gold); }
+            50% { box-shadow: 0 0 60px var(--glow-gold), 0 0 80px var(--gold-primary); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 30px var(--gold-primary);
+            background: linear-gradient(135deg, var(--gold-secondary), var(--gold-accent));
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+            border-bottom: 1px solid var(--border-gold);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav .logo {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            text-decoration: none;
+            text-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px var(--glow-gold);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            text-shadow: 0 0 30px var(--glow-gold);
+        }
+
+        /* Feature Cards */
+        .features {
+            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-black) 100%);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .feature-card:nth-child(2) { animation-delay: 2s; }
+        .feature-card:nth-child(3) { animation-delay: 4s; }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--glow-gold) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+            border-color: var(--gold-primary);
+            background: var(--card-bg-hover);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px var(--gold-primary));
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Version Comparison */
+        .comparison {
+            background: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-darker) 100%);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .version-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .version-card.pro {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 40px var(--glow-gold);
+        }
+
+        .version-card h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+        }
+
+        .version-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .version-card li {
+            padding: 0.8rem 0;
+            position: relative;
+            padding-left: 2rem;
+            color: var(--text-light);
+        }
+
+        .version-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--gold-secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* How to Use */
+        .how-to-use {
+            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-black) 100%);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--bg-black);
+            box-shadow: 0 0 40px var(--glow-gold);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 40px var(--glow-gold); }
+            50% { box-shadow: 0 0 60px var(--glow-gold), 0 0 100px rgba(255, 215, 0, 0.3); }
+            100% { box-shadow: 0 0 40px var(--glow-gold); }
+        }
+
+        .step h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+        }
+
+        /* Code Templates */
+        .templates {
+            background: var(--bg-dark);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .template-code {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--gold-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-code::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-darker) 100%);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.15);
+        }
+
+        .quote {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .quote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -10px;
+            font-size: 3rem;
+            color: var(--gold-primary);
+            font-family: Georgia, serif;
+            text-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .author {
+            font-weight: 600;
+            color: var(--gold-primary);
+        }
+
+        .source {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        /* FAQ */
+        .faq {
+            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-black) 100%);
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .faq-question i {
+            color: var(--gold-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 2rem 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Videos */
+        .videos {
+            background: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-darker) 100%);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.15);
+        }
+
+        .video-card h4 {
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+        }
+
+        .video-link {
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .video-link:hover {
+            color: var(--gold-secondary);
+            transform: translateX(5px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-black);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-gold);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px var(--glow-gold);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-gold);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            nav {
+                background: rgba(10, 10, 10, 0.98);
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .template-code {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Starfield Background -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">🍌 Nano Banana</a>
+            <ul>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#comparison">版本对比</a></li>
+                <li><a href="#how-to">使用指南</a></li>
+                <li><a href="#developer">开发者选项</a></li>
+                <li><a href="#creative-cases">创意玩法</a></li>
+                <li><a href="#testimonials">用户评价</a></li>
+                <li><a href="#try-now">立即体验</a></li>
+                <li><a href="#faq">常见问题</a></li>
+                <li><a href="#videos">视频教程</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Nano Banana</h1>
+            <p class="subtitle">会听话的AI设计师 - Google最新AI图像模型，不仅能理解复杂指令，还能保持角色一致性、生成精准文字，像聊天一样轻松修图</p>
+            <a href="https://gemini.google.com" class="cta-button" target="_blank">
+                <span>立即免费体验</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">三大突破性功能，重新定义AI绘图</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>角色一致性</h3>
+                <p><strong>告别"换脸"困扰</strong> - 传统AI绘图的最大痛点是换个场景角色就变脸。Nano Banana能够在一系列不同的画面中保持同一个人物或物体的外观特征不变。</p>
+                <br>
+                <div class="template-code" style="font-size: 0.85rem;">
+                    <strong>实战演示：</strong><br>
+                    1. <strong>定妆：</strong> "生成一张图片，一个穿着红色连帽衫、戴着眼镜的卡通小男孩，背着一个蓝色书包，正站在学校门口。"<br><br>
+                    2. <strong>换场景：</strong> "保持同一个小男孩的角色形象不变，让他现在在图书馆里看书。"<br><br>
+                    3. <strong>再换场景：</strong> "还是这个小男孩，让他现在在公园里踢足球。"
+                </div>
+                <br>
+                <p style="margin-bottom: 0;"><strong>实际应用：</strong></p>
+                <ul style="list-style: none; padding-left: 0; margin-top: 0.5rem;">
+                    <li>✓ 连环画创作 - 主角不会"变脸"</li>
+                    <li>✓ 品牌IP设计 - 保持视觉统一</li>
+                    <li>✓ 故事分镜制作 - 连续剧情创作</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>自然语言编辑</h3>
+                <p><strong>零门槛修图</strong> - 不需要复杂的修图技巧，直接用自然语言对话来修改图片。就像和设计师聊天一样简单。</p>
+                <br>
+                <div class="template-code" style="font-size: 0.85rem;">
+                    <strong>实战演示：</strong><br>
+                    1. <strong>先生成/上传一张图：</strong> 比如生成了一张猫的照片<br><br>
+                    2. <strong>发送修改指令：</strong><br>
+                    • "把这只猫的毛色改成纯白色的。"<br>
+                    • "把背景里的草地换成沙滩。"<br>
+                    • "给猫戴上一副墨镜。"
+                </div>
+                <br>
+                <p style="margin-bottom: 0;"><strong>💡 3个技巧：</strong></p>
+                <ul style="list-style: none; padding-left: 0; margin-top: 0.5rem; font-size: 0.9rem;">
+                    <li>• 多轮对话：第一张不完美，继续对话修改</li>
+                    <li>• 指定风格："皮克斯风格"、"写实照片"</li>
+                    <li>• 上传照片融合：融合两张照片创造新效果</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">✏️</div>
+                <h3>精准文字渲染</h3>
+                <p><strong>告别乱码时代</strong> - 在生成带有文字的图片（如海报、Logo）时，能够生成清晰、准确的拼写，减少了以往AI生成乱码的情况。</p>
+                <br>
+                <div class="template-code" style="font-size: 0.85rem;">
+                    <strong>实战演示：</strong><br>
+                    "生成一个霓虹灯招牌，上面写着 'OPEN 24 HOURS'，赛博朋克风格。"
+                    <br><small style="opacity: 0.7;">Nano Banana能准确拼写OPEN 24 HOURS，而不会生成乱码</small>
+                </div>
+                <br>
+                <p style="margin-bottom: 0;"><strong>文字准确性提升：</strong></p>
+                <ul style="list-style: none; padding-left: 0; margin-top: 0.5rem;">
+                    <li>✓ 拼写错误率 &lt; 1%</li>
+                    <li>✓ 支持多语言文字生成</li>
+                    <li>✓ 适合商业设计和logo创作</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3>多图融合</h3>
+                <p>可以将两张或多张图片的内容自然地融合在一起，创造全新的视觉效果。上传两张照片，让AI帮你融合产生意想不到的创意。</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>极速响应</h3>
+                <p>Gemini 2.5 Flash Image版本主打速度和效率，适合快速生成和日常娱乐使用。响应速度业界领先，创作灵感无需等待。</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>强大推理</h3>
+                <p>Gemini 3.0 Pro Image具备更强的逻辑推理能力和世界知识，适合生成复杂的图表、设计稿以及需要高精度的商业用途。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Version Comparison -->
+    <section class="comparison" id="comparison">
+        <h2 class="section-title">选择适合你的版本</h2>
+
+        <div class="comparison-grid">
+            <div class="version-card">
+                <h4>🚀 Gemini 2.5 Flash Image</h4>
+                <p style="font-weight: 600; color: var(--text-dark); margin-bottom: 1.5rem;">标准版 - 快速高效</p>
+                <ul>
+                    <li>速度优先，响应极快</li>
+                    <li>适合日常创作使用</li>
+                    <li>免费版用户可用</li>
+                    <li>2025年8月发布</li>
+                    <li>基础图像编辑功能</li>
+                    <li>文字渲染准确率高</li>
+                </ul>
+            </div>
+
+            <div class="version-card pro">
+                <h4>⭐ Gemini 3.0 Pro Image</h4>
+                <p style="font-weight: 600; color: var(--text-dark); margin-bottom: 1.5rem;">专业版 - 高质量输出</p>
+                <ul>
+                    <li>画质更高，细节更丰富</li>
+                    <li>专业级控制能力</li>
+                    <li>需要订阅 Gemini Advanced</li>
+                    <li>2025年11月发布</li>
+                    <li>强大逻辑推理能力</li>
+                    <li>适合商业用途</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use -->
+    <section class="how-to-use" id="how-to">
+        <h2 class="section-title">三步开始使用Nano Banana</h2>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>访问 Gemini</h3>
+                <p>打开 <a href="https://gemini.google.com" target="_blank" style="color: var(--gold-primary);">gemini.google.com</a> 或下载 Google Gemini App</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>输入指令</h3>
+                <p>直接发送绘图指令，系统自动调用最新模型</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>对话调整</h3>
+                <p>在同一个对话窗口中继续修改和优化</p>
+            </div>
+        </div>
+
+        <div class="templates">
+            <h3 style="text-align: center; margin-bottom: 2rem;">📝 实用提示词模板</h3>
+
+            <h4 style="margin-top: 2rem;">角色设定模板</h4>
+            <div class="template-code">
+                生成一个[年龄]岁的[性别]，穿着[服装描述]，戴着[配饰描述]，[风格]风格<br>
+                <small style="opacity: 0.7;">示例：生成一个穿着红色连帽衫、戴着眼镜的卡通小男孩，背着一个蓝色书包，皮克斯风格</small>
+            </div>
+
+            <h4 style="margin-top: 2rem;">场景切换模板</h4>
+            <div class="template-code">
+                保持这个角色的形象不变，让他/她现在在[地点]，正在做[动作]<br>
+                <small style="opacity: 0.7;">示例：保持同一个小男孩的角色形象不变，让他现在在图书馆里看书</small>
+            </div>
+
+            <h4 style="margin-top: 2rem;">文字设计模板</h4>
+            <div class="template-code">
+                生成一个[物体类型]，上面写着"[文字内容]"，[风格]风格<br>
+                <small style="opacity: 0.7;">示例：生成一个霓虹灯招牌，上面写着 "OPEN 24 HOURS"，赛博朋克风格</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Options -->
+    <section class="developer" id="developer" style="background: linear-gradient(180deg, var(--bg-black) 0%, var(--bg-dark) 100%);">
+        <h2 class="section-title">开发者选项：Google AI Studio</h2>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 3rem; font-size: 1.1rem;">如果您是开发者或高阶用户，想要体验更纯粹的模型能力或调整参数</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>访问Google AI Studio</h3>
+                <p>开发者平台提供更高级的控制选项：</p>
+                <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                    <li style="padding: 0.5rem 0;">✓ Token数量调整</li>
+                    <li style="padding: 0.5rem 0;">✓ 安全设置配置</li>
+                    <li style="padding: 0.5rem 0;">✓ 温度参数控制</li>
+                    <li style="padding: 0.5rem 0;">✓ 响应格式选择</li>
+                </ul>
+                <a href="https://aistudio.google.com" target="_blank" style="display: inline-block; margin-top: 1rem; color: var(--gold-primary); text-decoration: none;">
+                    访问 aistudio.google.com →
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>快速开始步骤</h3>
+                <ol style="padding-left: 1.5rem; color: var(--text-light);">
+                    <li style="padding: 0.5rem 0;">登录您的Google账号</li>
+                    <li style="padding: 0.5rem 0;">点击右上角的"Create new"</li>
+                    <li style="padding: 0.5rem 0;">在右侧模型选择菜单中查找带有<strong>"Gemini 2.5 Flash Image"</strong>或<strong>"Gemini 3.0 Pro Image"</strong>字样的模型</li>
+                    <li style="padding: 0.5rem 0;">在左侧输入框输入提示词（Prompt）</li>
+                    <li style="padding: 0.5rem 0;">点击"Run"即可生成</li>
+                </ol>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">
+                    💡 提示：通常免费提供一定的配额供测试使用
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>开发者优势</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem 0;">🔧 <strong>参数控制：</strong>精确调整生成参数</li>
+                    <li style="padding: 0.5rem 0;">📊 <strong>批量处理：</strong>支持批量图像生成</li>
+                    <li style="padding: 0.5rem 0;">🔗 <strong>API接入：</strong>可直接集成到应用中</li>
+                    <li style="padding: 0.5rem 0;">📈 <strong>性能监控：</strong>查看使用统计和成本</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Use Cases -->
+    <section class="creative-cases" id="creative-cases" style="background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-black) 100%);">
+        <h2 class="section-title">6个新奇实用的创意玩法</h2>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 3rem;">Nano Banana的核心优势在于对自然语言的精准理解，这些玩法让你充分发挥AI的潜力</p>
+
+        <div class="creative-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>1. 零错别字的Logo和贴纸</h3>
+                <p><strong>杀手级功能：</strong>以前AI画带字的图全是乱码，现在可以一步到位。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    <strong>提示词：</strong><br>
+                    A die-cut sticker of a cute robot holding a sign that says "DEBUGGING LIFE". Vector art style, white border, high contrast.
+                    <br><small style="opacity: 0.7;">（模切贴纸，可爱的机器人举着"DEBUGGING LIFE"牌子，矢量风格）</small>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点：无需后期PS加字，AI直接生成完美文字</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>2. 连环画分镜创作</h3>
+                <p><strong>角色一致性应用：</strong>创作四格漫画，主角不会"变脸"。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    <strong>步骤：</strong><br>
+                    1. 定妆："生成一个穿着绿色卫衣、戴着红帽子的8岁小男孩，皮克斯风格"<br>
+                    2. 剧情A："保持这个小男孩的形象，让他坐在教室举手回答问题"<br>
+                    3. 剧情B："还是这个小男孩，让他现在在操场上跌倒了"
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点：真正的内容输出，不只是单张美图</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👟</div>
+                <h3>3. 不可能物体产品原型</h3>
+                <p><strong>概念融合：</strong>将两个不相关的概念逻辑融合，适合创意脑暴。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    A futuristic sneaker made entirely of transparent glass and glowing circuit boards, floating in a dark studio setting, product photography.
+                    <br><small style="opacity: 0.7;">（透明玻璃和发光电路板制成的未来运动鞋，悬浮展示）</small>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点：物理光影渲染逼真，怪点子可视化</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>4. 对话式室内设计</h3>
+                <p><strong>自然语言编辑：</strong>像指挥装修工一样修改画面，无需重新生成。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    <strong>指令序列：</strong><br>
+                    1. 上传或生成客厅照片<br>
+                    2. "把灰沙发换成复古棕色皮沙发"<br>
+                    3. "在窗边加一盆琴叶榕植物"<br>
+                    4. "墙壁改成莫兰迪蓝色"
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点：低成本试错，适合装修预览和换装试穿</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>5. PPT逻辑图表制作</h3>
+                <p><strong>抽象概念可视化：</strong>将复杂概念转化为专业3D插画。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    An isometric 3D illustration representing "Data Privacy". A digital shield protecting a glowing server, with a lock icon. Clean minimal style, blue and white color palette, white background.
+                    <br><small style="opacity: 0.7;">（数据隐私的3D等距插画，数字盾牌保护服务器）</small>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点：告别模糊带水印的素材图，自定义专业配图</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📸</div>
+                <h3>6. 伪纪录片风格照片</h3>
+                <p><strong>超写实效果：</strong>生成像电影剧照的虚构历史场景。</p>
+                <div class="template-code" style="margin-top: 1rem; font-size: 0.85rem;">
+                    A grainy 1980s polaroid photo of a family having dinner on the moon. Earth is visible through the window. Retro aesthetic, flash photography.
+                    <br><small style="opacity: 0.7;">（1980年代宝丽来照片，一家人在月球吃晚餐）</small>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">✨ 新奇点："虚假的真实感"在社交媒体上非常吸睛</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--bg-dark); border-radius: 20px; border: 1px solid var(--border-gold);">
+            <h3 style="color: var(--gold-primary); font-family: 'Orbitron', monospace; margin-bottom: 1rem;">💡 核心建议</h3>
+            <p style="color: var(--text-light); max-width: 600px; margin: 0 auto;">
+                玩Nano Banana时，不要把它当成"生成器"，而要把它当成"设计师"。多用"把A改成B"、"保持C不变"这样的对话句式，你会发现新大陆。
+            </p>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">用户真实评价</h2>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="quote">终于能写对字了！以前AI生成海报文字总是乱码，但Nano Banana生成的招牌、Logo文字非常清晰且拼写准确。</p>
+                <p class="author">@AI_Creator_2025</p>
+                <p class="source">来源：X/Twitter</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">💡 案例：生成赛博朋克霓虹灯牌，单词拼写完全正确</p>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="quote">角色一致性是游戏规则改变者。我可以画连环画了，因为主角不会换个场景就换张脸。Nano Banana解决了AI绘图最大的痛点！</p>
+                <p class="author">@ComicArtist_Pro</p>
+                <p class="source">来源：Reddit</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">💡 案例：四格漫画主角在不同场景保持完全一致</p>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="quote">像聊天一样P图，把Photoshop的门槛降到了零。上传一张自拍，直接发指令'把我手里的水瓶换成红酒，背景换成巴黎'，效果太惊艳了！</p>
+                <p class="author">@Design_Lover</p>
+                <p class="source">来源：X/Twitter</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">💡 自然编辑效果非常自然，引发大量转发</p>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="quote">Nano Banana是市面上最'聪明'的绘图模型，听得懂人话、能写字、能修图。不过也是'最保守'的，很多东西不让画。</p>
+                <p class="author">@Tech_Reviewer</p>
+                <p class="source">来源：技术论坛</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">⚠️ 提醒：Google安全过滤器非常严格</p>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="quote">有人称其为'Midjourney杀手'。Nano Banana强在理解复杂指令和逻辑性，Midjourney强在艺术感和审美上限。</p>
+                <p class="author">@Creative_Director</p>
+                <p class="source">来源：设计师社区</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">🔄 对比：工具vs艺术品，实用vs美观</p>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="quote">Gemini的画质是顶级的，但拒绝率也是顶级的。用户甚至在比较'如何绕过审查'的提示词技巧。</p>
+                <p class="author">@Power_User</p>
+                <p class="source">来源：AI竞技场</p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--gold-primary);">🔧 热门：Jailbreak提示词技巧分享</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2rem; background: var(--bg-dark); border-radius: 20px; border: 1px solid var(--border-gold);">
+            <h3 style="color: var(--gold-primary); font-family: 'Orbitron', monospace; text-align: center; margin-bottom: 1.5rem;">竞品对比详情</h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="text-align: center;">
+                    <h4 style="color: var(--text-light); margin-bottom: 1rem;">🆚 vs Midjourney</h4>
+                    <ul style="text-align: left; color: var(--text-dim);">
+                        <li style="padding: 0.5rem 0;">✅ Nano Banana：理解指令、文字准确</li>
+                        <li style="padding: 0.5rem 0;">✅ Nano Banana：自然语言编辑</li>
+                        <li style="padding: 0.5rem 0;">✅ Midjourney：艺术感更强</li>
+                        <li style="padding: 0.5rem 0;">✅ Midjourney：光影质感优秀</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center;">
+                    <h4 style="color: var(--text-light); margin-bottom: 1rem;">🆚 vs Flux</h4>
+                    <ul style="text-align: left; color: var(--text-dim);">
+                        <li style="padding: 0.5rem 0;">✅ Nano Banana：速度极快</li>
+                        <li style="padding: 0.5rem 0;">✅ Nano Banana：商业级功能</li>
+                        <li style="padding: 0.5rem 0;">✅ Flux：没有审查限制</li>
+                        <li style="padding: 0.5rem 0;">✅ Flux：真实感人像强</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center;">
+                    <h4 style="color: var(--text-light); margin-bottom: 1rem;">💬 社区共识</h4>
+                    <p style="color: var(--text-light); font-style: italic;">
+                        "Nano Banana是最聪明但也最保守的绘图模型"<br>
+                        <span style="font-size: 0.9rem; color: var(--text-dim);">适合正经设计，不适合边缘内容</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Try Now -->
+    <section class="try-now" id="try-now" style="background: linear-gradient(135deg, var(--bg-black) 0%, var(--bg-darker) 100%); padding: 5rem 2rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">✨ 想要立即体验吗？</h2>
+            <p style="color: var(--text-dim); font-size: 1.1rem; margin-bottom: 3rem;">
+                试试Nano Banana的"文字渲染"能力！复制下面的英文提示词发给Gemini，看看效果如何：
+            </p>
+
+            <div style="background: var(--bg-dark); border: 2px solid var(--border-gold); border-radius: 20px; padding: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                <p style="font-family: 'Courier New', monospace; color: var(--text-light); text-align: left; line-height: 1.8; margin-bottom: 1.5rem;">
+                    <span style="color: var(--gold-primary); font-weight: bold;">Generate a realistic close-up photo</span> of a cyberpunk neon sign on a rainy street at night. The sign clearly says "NANO BANANA" in glowing yellow letters. Reflections on wet pavement, dramatic lighting, cinematic atmosphere, 8K resolution.
+                </p>
+                <p style="text-align: left; color: var(--text-dim); font-style: italic; font-size: 0.9rem;">
+                    生成一张雨夜街道上赛博朋克霓虹灯牌的写实特写。牌子上用发光的黄色字母清晰地写着 "NANO BANANA"。湿漉漉路面上的倒影，戏剧性的光照，电影般的氛围，8K分辨率。
+                </p>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <a href="https://gemini.google.com" target="_blank" style="display: inline-block; padding: 1.5rem 3rem; background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary)); color: var(--bg-black); text-decoration: none; font-weight: 600; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 10px 30px var(--glow-gold); transition: all 0.3s ease;">
+                    立即体验 Nano Banana →
+                </a>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 15px; border: 1px solid var(--border-gold);">
+                <p style="color: var(--text-light); font-size: 0.95rem;">
+                    <strong>💡 小贴士：</strong>如果生成的效果不理想，试着在后面加上"更亮一些"、"换个角度"或"让雨水更明显"等修改指令，Nano Banana会理解并调整！
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <h2 class="section-title">常见问题解答</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>在哪里可以下载 "Nano Banana" App？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>没有独立的App。Nano Banana是Google模型的研发代号，它已经集成在了<strong>Google Gemini</strong>的网页版和手机App中。你只需要使用Gemini，就是在享用它的技术。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>为什么叫 "Nano Banana" 这么奇怪的名字？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>这是为了在<strong>LMArena</strong>（一个AI模型竞技场）进行盲测时使用的匿名代号。目的是为了防止评测者因为知道是Google的产品而产生偏见。结果它在盲测中击败了众多对手，这个名字也就火了。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>它是免费的吗？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p><strong>大部分功能免费。</strong></p>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>Gemini 2.5 Flash Image</strong>（速度快、标准版）：通常对Gemini免费版用户开放</li>
+                    <li><strong>Gemini 3.0 Pro Image</strong>（画质更高、推理更强）：通常需要订阅<strong>Gemini Advanced</strong>会员才能无限制使用最高质量版本</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>怎么让AI保持人物长相不变（角色一致性）？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p><strong>不需要复杂的代码。</strong></p>
+                <ol style="margin-top: 1rem;">
+                    <li>先生成一张满意的人物图</li>
+                    <li>在<strong>同一个对话窗口</strong>中继续输入："保持这个角色的形象，让他/她去海边散步"</li>
+                    <li><strong>技巧：</strong>给角色起个名字（例如"生成一个叫Tom的男孩..."），后续对话中直接用名字指代，效果往往更好</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>它可以生成带文字的图片吗？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p><strong>可以，且表现很强。</strong>在提示词中明确指出文字内容，建议用引号括起来。例如："生成一个咖啡店招牌，上面写着<strong>'Fresh Coffee'</strong>"。Nano Banana是目前拼写错误率最低的模型之一。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>我可以上传自己的照片让它修改吗？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p><strong>可以。</strong>你可以上传一张照片，然后发送指令："把背景换成雪山"或"把衣服换成红色的"。但请注意，处于隐私保护，它通常<strong>拒绝处理真人的面部识别</strong>（即不能把名人的脸换到你的照片上，也不能深度伪造）。</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>为什么它总是拒绝生成我的图片？(Refusals)</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p><strong>这是Nano Banana被吐槽最多的点。</strong>Google的<strong>安全过滤器(Safety Filter)</strong>非常严格。</p>
+                <p style="margin-top: 1rem;"><strong>常见拒绝原因：</strong></p>
+                <ul>
+                    <li><strong>版权保护：</strong>即使你没提，如果提示词描述的角色太像马里奥或米老鼠，它可能会拒绝</li>
+                    <li><strong>真人/公众人物：</strong>涉及真实政治家、明星的生成通常会被拦截</li>
+                    <li><strong>NSFW/暴力：</strong>任何擦边球、暴力、血腥内容都会直接触发封锁</li>
+                    <li><strong>特定历史场景：</strong>为了避免偏见争议，某些特定种族或历史敏感场景会被"一刀切"地拒绝</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>生成的图片有水印吗？可以商用吗？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <ul style="margin-top: 1rem;">
+                    <li><strong>水印：</strong>图片像素里嵌入了<strong>SynthID</strong>（人眼不可见的水印），用来标识这是AI生成的图片，防止深度伪造欺诈</li>
+                    <li><strong>商用：</strong>根据Google的服务条款，付费版（Gemini Advanced / Enterprise）生成的内容通常拥有商业使用权，但免费版的条款可能会有所变动，建议查看最新的Google Generative AI使用条款</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>和Midjourney相比，它差在哪？</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <ul style="margin-top: 1rem;">
+                    <li><strong>Nano Banana强在：</strong>听得懂复杂指令、能写对字、修改图片方便、速度快</li>
+                    <li><strong>Midjourney强在：</strong>艺术感、光影质感、创意构图</li>
+                    <li><strong>建议：</strong>如果你追求"像艺术馆里的画"，Midjourney依然是王者；如果你追求"按我的要求把活干完"，Nano Banana更好用</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos -->
+    <section class="videos" id="videos">
+        <h2 class="section-title">视频教程与演示</h2>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 2rem;">这些视频大多是英文解说，您可以开启YouTube的"自动翻译字幕"功能（设置→字幕→自动翻译→中文）</p>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--gold-primary); font-family: 'Orbitron', monospace; margin-bottom: 1rem;">🔰 新手入门与综合评测</h3>
+            <p style="color: var(--text-dim);">快速了解Nano Banana能做什么</p>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-card">
+                <h4>🚀 Nano Banana Pro: Hands-on with the World's Most Powerful Image Model</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">非常直观的上手体验视频，展示Gemini 3.0 Pro Image的核心功能</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>从简单文生图到复杂图像编辑流程</li>
+                        <li>适合第一次接触该模型的人</li>
+                        <li>展示主要功能和操作界面</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=hk6gwiZmSWA" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (15:23)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="video-card">
+                <h4>💡 Google Gemini 2.5 Flash Image (Nano Banana) - 20 Creative Use Cases</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">展示20种脑洞大开的创意用法</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>做PPT素材、产品模型</li>
+                        <li>辅助设计等实用场景</li>
+                        <li>非常启发灵意的创意展示</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=-tMERzjAvgw" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (22:45)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div style="margin: 3rem 0 2rem;">
+            <h3 style="color: var(--gold-primary); font-family: 'Orbitron', monospace; margin-bottom: 1rem;">🎨 进阶教程：角色一致性与精准控制</h3>
+            <p style="color: var(--text-dim);">专为设计师和创作者打造的深度教程</p>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-card">
+                <h4>👥 How to Create Consistent AI Characters | ComfyUI + Nano Banana</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">专注于解决AI绘图最大的痛点——角色一致性</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>详细演示如何保持角色一致</li>
+                        <li>不同场景中长相、衣服不变</li>
+                        <li>虽然标题提到ComfyUI，但展示的是Nano Banana原生能力</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=JNJt1OjpX0Y" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (18:30)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="video-card">
+                <h4>📚 Nano Banana (Gemini 2.5 Flash Image) Full Tutorial - 27 Unique Cases</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">硬核全面教程，包含27个测试案例</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>与开源模型（Qwen）详细对比</li>
+                        <li>演示"给人物戴墨镜"、"换背景"</li>
+                        <li>非常适合学习如何写提示词</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=qPUreQxB8zQ" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (35:15)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div style="margin: 3rem 0 2rem;">
+            <h3 style="color: var(--gold-primary); font-family: 'Orbitron', monospace; margin-bottom: 1rem;">✍️ 专业功能：文字渲染与设计</h3>
+            <p style="color: var(--text-dim);">重点关注商业设计和文字生成能力</p>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-card">
+                <h4>🎨 Nano Banana Pro Just Changed Graphic Design Forever! (Review & Tutorial)</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">重点展示Text Rendering（文字渲染）能力</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>生成清晰、拼写正确的Logo</li>
+                        <li>海报制作演示</li>
+                        <li>证明商业设计领域潜力</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=WA_VI0kgkXM" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (12:40)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="video-card">
+                <h4>🔥 Google Nano Banana Pro Tutorial: Master 5 Hidden Features</h4>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>内容概述：</strong></p>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;">挖掘隐藏的高级功能</p>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>🎯 看点：</strong></p>
+                    <ul style="color: var(--text-light); font-size: 0.85rem; padding-left: 1.5rem;">
+                        <li>调整宽高比(Aspect Ratio)</li>
+                        <li>生成信息图表(Infographics)</li>
+                        <li>发挥Nano Banana全部潜力</li>
+                    </ul>
+                </div>
+                <a href="https://www.youtube.com/watch?v=yLtgwE0_S-Q" target="_blank" class="video-link">
+                    <span>▶️ 观看视频 (16:20)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于Nano Banana</h4>
+                <p style="color: var(--text-dim);">Google DeepMind开发的最新AI图像生成模型，正式名称为Gemini Image系列。Nano Banana是其在LMArena盲测时使用的代号，因表现优异而广为人知。</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="https://gemini.google.com" target="_blank">开始使用</a></li>
+                    <li><a href="https://aistudio.google.com" target="_blank">Google AI Studio</a></li>
+                    <li><a href="#" target="_blank">开发者文档</a></li>
+                    <li><a href="#" target="_blank">更新日志</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>学习资源</h4>
+                <ul>
+                    <li><a href="#" target="_blank">提示词指南</a></li>
+                    <li><a href="#" target="_blank">最佳实践</a></li>
+                    <li><a href="#" target="_blank">社区论坛</a></li>
+                    <li><a href="#" target="_blank">案例展示</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>法律信息</h4>
+                <ul>
+                    <li><a href="#" target="_blank">隐私政策</a></li>
+                    <li><a href="#" target="_blank">服务条款</a></li>
+                    <li><a href="#" target="_blank">使用指南</a></li>
+                    <li><a href="#" target="_blank">安全中心</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Google DeepMind. Nano Banana是Gemini Image系列的社区昵称。</p>
+            <p style="margin-top: 0.5rem;">最后更新：2025年12月</p>
+        </div>
+    </footer>
+
+    <script>
+        // Generate starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 3 + 'px';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starfield.appendChild(star);
+            }
+
+            // Add shooting stars
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.animationDelay = Math.random() * 10 + 's';
+                shootingStar.style.width = Math.random() * 100 + 50 + 'px';
+                starfield.appendChild(shootingStar);
+            }
+        }
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.feature-card');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            cards.forEach((card, index) => {
+                const speed = (index + 1) * 10;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+
+                card.style.transform = `translateY(-10px) translateX(${xOffset}px) translateY(${yOffset}px)`;
+            });
+        });
+
+        // Initialize
+        createStarfield();
+
+        // Add intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
